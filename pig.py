@@ -8,8 +8,7 @@ headers = {"Host": "www.webmd.com", "User-Agent": "Mozilla/5.0 (Windows NT 10.0;
 
 persons = []
 
-def search(start):
-   params = {"sortby": "bestmatch", "distance": 161, "newpatient": "", "minrating":0, "start": start, "q": "Physical Medicine & Rehabilitation", "pt": "30.6739,-88.089", "specialtyid":29309, "insuranceid": ""}
+def search(params):   
    req = requests.get("https://www.webmd.com/search/2/api/lhd_v_search", params=params, headers=headers, proxies=proxy)
    dat = json.loads(req.text)
    for man in dat['data']['response']:
@@ -18,16 +17,17 @@ def search(start):
       phone = addr['LocationPhone']
       address = '%s, %s, %s, %s, %s' % (addr['PracticeName'], addr['address'], addr['city'], addr['state'], addr['zipcode'])
       person = {'Physician Name': man['fullname'], 'Specialty': man['specialty_consumername_mvs'][0], 'Phone': phone, 'Address': address, 'LocationId': addr['LocationId'], "LocationEntityId": addr["LocationEntityId"]}      
-      persons.append(person)
-
+      persons.append(person)      
       with open('datadump.txt', 'a') as p:
-         p.write("%s,\n" % dat)
+         p.write("%s,\n" % person)
+         print('writing: %s' % person)
 
    
-for start in range(0, 67, 10):
-   search(0)
+for start in range(0, 75, 10):
+   params = {"sortby": "bestmatch", "distance": 40, "newpatient": "", "minrating":0, "start": start, "q": "Neurologist", "pt": "30.6739,-88.089", "specialtyid": 29282, "insuranceid": ""}
+   search(params)
 
-# next search: params = {"sortby": "bestmatch", "distance": 40, "newpatient": "", "minrating":0, "start": start, "q": "Neurologist", "pt": "30.6739,-88.089", "specialtyid": 29282, "insuranceid": ""}
-# range(0, 75, 10)
+# search range(0, 75, 10): params = {"sortby": "bestmatch", "distance": 40, "newpatient": "", "minrating":0, "start": start, "q": "Neurologist", "pt": "30.6739,-88.089", "specialtyid": 29282, "insuranceid": ""}
+# search range(0, 67, 10): params = {"sortby": "bestmatch", "distance": 161, "newpatient": "", "minrating":0, "start": start, "q": "Physical Medicine & Rehabilitation", "pt": "30.6739,-88.089", "specialtyid":29309, "insuranceid": ""}
 
-pandas.read_json(json.dumps(persons)).to_excel("datadump.xlsx", index=False)
+pandas.read_json(json.dumps(persons)).to_excel("datadump_neurologist.xlsx", index=False)
