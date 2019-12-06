@@ -23,11 +23,11 @@ def search(params):
          print('writing: %s' % person)
 
    
-for start in range(0, 75, 10):
-   params = {"sortby": "bestmatch", "distance": 40, "newpatient": "", "minrating":0, "start": start, "q": "Neurologist", "pt": "30.6739,-88.089", "specialtyid": 29282, "insuranceid": ""}
+for start in range(0, 36, 10):
+   params = {"sortby": "bestmatch", "distance": 161, "newpatient": "", "minrating":0, "start": start, "q": "Physical Medicine and Rehabilitation", "pt": "39.1836,-96.5716", "specialtyid":29309, "insuranceid": ""}
    search(params)
 
 # search range(0, 75, 10): params = {"sortby": "bestmatch", "distance": 40, "newpatient": "", "minrating":0, "start": start, "q": "Neurologist", "pt": "30.6739,-88.089", "specialtyid": 29282, "insuranceid": ""}
 # search range(0, 67, 10): params = {"sortby": "bestmatch", "distance": 161, "newpatient": "", "minrating":0, "start": start, "q": "Physical Medicine & Rehabilitation", "pt": "30.6739,-88.089", "specialtyid":29309, "insuranceid": ""}
 
-pandas.read_json(json.dumps(persons)).to_excel("datadump_neurologist.xlsx", index=False)
+pandas.read_json(json.dumps(persons)).to_excel("datadump_physical_medicine_and_rehabilitation_mahattan.xlsx", index=False)
